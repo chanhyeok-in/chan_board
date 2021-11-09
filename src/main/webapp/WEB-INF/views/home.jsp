@@ -2,13 +2,14 @@
 <%@ page session="false" %>
 <html>
 <head>
-	<title>Home</title>
+	<title>초기화면 </title>
 </head>
 <body>
 <h1>
-	Hello world!  
+	Heㅣㅣo world!  
 </h1>
 
-<P>  The time on the server is ${serverTime}. </P>
+<P>  현재 시간은  ${serverTime} 입니다. </P>
+<a href="/board/boardList.do">게시판 이동</a>
 </body>
 </html>

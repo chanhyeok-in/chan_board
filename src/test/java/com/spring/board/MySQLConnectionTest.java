@@ -15,9 +15,9 @@ public class MySQLConnectionTest {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
  
     static final String DRIVER = "com.mysql.jdbc.Driver";
-    static final String URL = "jdbc:mysql://127.0.0.1:3306/board?allowPublicKeyRetrieval=true&useSSL=false";
-    static final String USERNAME = "board";
-    static final String PASSWORD = "password1!";
+    static final String URL = "jdbc:mysql://13.125.134.46:3306/board?allowPublicKeyRetrieval=true&useSSL=false";
+    static final String USERNAME = "chan";
+    static final String PASSWORD = "cksgur@@#";
  
     @Test
     public void getMySQLConnectionTest() {
