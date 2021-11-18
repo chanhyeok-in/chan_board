@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.spring.board.MemberMapper">
+ 
+    
+    
+    <insert id="insertMember" parameterType="com.spring.board.dto.MemberDto">
+    
+        INSERT 
+        INTO board.TB_MEMBER 
+        (
+                USER_ID
+              , USER_PW
+              , EMAIL_CODE
+              , INS_DATE
+              , MOD_DATE
+        ) 
+        VALUES 
+        (
+              #{board_writer1}
+             , #{board_subject}
+             , #{board_content}
+             , NOW()
+             , NOW()
+        )
+    
+    </insert>
+        
+    
+    
+</mapper>

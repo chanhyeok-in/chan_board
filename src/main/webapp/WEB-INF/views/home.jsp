@@ -3,6 +3,7 @@
 <html>
 <head>
 	<title>초기화면 </title>
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
 </head>
 <body>
 <h1>
