@@ -1,34 +1,38 @@
 package com.spring.board.service;
  
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
- 
-import com.spring.board.common.PagingUtil;
-import com.spring.board.common.ResultUtil;
+
 import com.spring.board.dao.BoardDao;
-import com.spring.board.dto.BoardDto;
-import com.spring.board.dto.CommonDto;
-import com.spring.board.form.BoardFileForm;
-import com.spring.board.form.BoardForm;
-import com.spring.board.form.CommonForm;
+import com.spring.board.dao.MemberDao;
+import com.spring.board.dto.MemberDto;
  
 @Service
 public class MemberService {
  
 	protected final Logger logger = LoggerFactory.getLogger(MemberService.class);
 	
-   
+	@Autowired
+    private MemberDao memberDao;
  
-    
+	public MemberDto insertMember(MemberDto memberDto ) throws Exception {
+		memberDao.insertMember(memberDto);
+ 
+        return memberDto;
+    }
+	
+	public int checkMember(MemberDto memberDto) throws Exception {
+		int aaa = memberDao.checkMember(memberDto);
+        return aaa;
+    }
+	
+	public MemberDto emailVaild(MemberDto memberDto) throws Exception {
+		memberDao.emailVaild(memberDto);
+ 
+        return memberDto;
+    }
     
  
     

@@ -28,25 +28,38 @@
 	     }                            
 
 	     else {                       
-			var randomquery = "d1d1d1d1";
-	    	 var data22 = {
-	    				service_id: 'service_2pp0eeo',
-	    				template_id: 'template_qu42mgi',
-	    				user_id: 'user_HFVuwTy8HlTgM5YQ3mj5S',
-	    				template_params: {
-	    				    'to_name': $('#email').val(),
-	    				    'from_name':"Chan's World",
-	    				    'message': "<a href='http://13.125.134.46/otp/checkEmail?q="+randomquery+"'>http://13.125.134.46:8080/otp/checkEmail?q="+randomquery+"></a>"
-	    				  	}
-	    			};
-	    					$.ajax({
-	    				url: "https://api.emailjs.com/api/v1.0/email/send",
-	    				type: "POST",
-	    				data: JSON.stringify(data22),
-	    				contentType: 'application/json'
-	    			});         
-			alert("활성화 메일이 발송되었습니다. 이메일에서 확인 링크를 클릭시 계정이 활성화 됩니다. 메일이 오지 않는다면, 스팸메일함을 확인해 주시기 바랍니다.");
-			location.href="http://13.125.134.46/otp/login";
+			$.ajax({
+				type : "POST",            // HTTP method type(GET, POST) 형식이다.
+                url : "/otp/newMemberAjax",      // 컨트롤러에서 대기중인 URL 주소이다.
+                data : {"USER_ID":$('#email').val(), "USER_PW":$('#passwd1').val()},            // Json 형식의 데이터이다.
+                success : function(res){ // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
+                    // 응답코드 > 0000
+                    if(res[2]="success"){
+                    var data22 = {
+    	    				service_id: 'service_2pp0eeo',
+    	    				template_id: 'template_qu42mgi',
+    	    				user_id: 'user_HFVuwTy8HlTgM5YQ3mj5S',
+    	    				template_params: {
+    	    				    'to_name': $('#email').val(),
+    	    				    'from_name':"Chan's World",
+    	    				    'message': "<a href='http://13.125.134.46/otp/emailVaildAjax?USER_ID="+$('#email').val()+"&EMAIL_CODE="+res[1]+"'>http://13.125.134.46:8080/otp/emailVaildAjax?EMAIL_CODE="+res[1]+"</a>"
+    	    				  	}
+    	    			};
+    	    					$.ajax({
+    	    				url: "https://api.emailjs.com/api/v1.0/email/send",
+    	    				type: "POST",
+    	    				data: JSON.stringify(data22),
+    	    				contentType: 'application/json'
+    	    			});         
+    				alert(res[0]);
+    				location.href="http://13.125.134.46/otp/login";
+                    }
+                },
+                error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+                    alert("실패.")
+                }
+			});
+	    	 
 	     }                            
 
 	}             
@@ -55,12 +68,12 @@
 </head>
 <body>
 <h1>
-	로그인
+	회원가입
 </h1>
  <form name="member">
 <P>  E-mail <input type="text" id="email"/></P>
-<P>  PASSWORD <input type="password" id="passwd1"/></P>
-<P>  for PASSWORD correct <input type="password" id="passwd2"/></P>
+<P>  패스워드 <input type="password" id="passwd1"/></P>
+<P>  패스워드 확인 <input type="password" id="passwd2"/></P>
 <P>  <input type="button" name="가입" value="가입" onclick="CheckEmail()"/></P>
 </form>
 </body>

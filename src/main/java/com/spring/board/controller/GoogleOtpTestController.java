@@ -1,5 +1,6 @@
 package com.spring.board.controller;
 
+import java.io.PrintWriter;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -13,6 +14,7 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.codec.binary.Base32;
+import org.apache.commons.codec.digest.Crypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +23,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.spring.board.dto.MemberDto;
 import com.spring.board.service.MemberService;
-
+import org.json.simple.*;
 /**
  * Handles requests for the application home page.
  */
@@ -64,21 +68,78 @@ public class GoogleOtpTestController {
 	
 	/**
 	 * 회원가입 창
-	 * @throws ServletRequestBindingException 
+	 * @throws Exception 
 	 */
+	@ResponseBody
 	@RequestMapping(value = "/newMemberAjax")
-	public String newMemberAjax(HttpServletRequest request, Model model) throws ServletRequestBindingException {
+	public JSONArray newMemberAjax(HttpServletRequest request, Model model) throws Exception {
 		
 		String memberEmailq=getRandomString();
+		String memberMemo="";
+		String result="fail";
+		String checkMem="";
+		MemberDto memberDto = new MemberDto();
+		memberDto.setUSER_ID(request.getParameter("USER_ID"));
+		int aaa = memberService.checkMember(memberDto);
+		checkMem=memberDto.getCOUNT();
+		if(aaa!=0){
+			memberMemo="이미 가입된 이메일입니다.";
+			result="fail";
+		}else{
+			memberMemo="활성화 메일이 발송되었습니다. 이메일에서 확인 링크를 클릭시 계정이 활성화 됩니다. 메일이 오지 않는다면, 스팸메일함을 확인해 주시기 바랍니다.";
+			memberDto = new MemberDto();
+			memberDto.setUSER_ID(request.getParameter("USER_ID"));
+			Base32 codec = new Base32();
+			byte[] bEncodedKey = codec.encode(request.getParameter("USER_PW").getBytes());
+	         
+	        // 생성된 Key!
+	        String encodedKey = new String(bEncodedKey);
+			memberDto.setUSER_PW(encodedKey);
+			memberDto.setEMAIL_CODE(memberEmailq);
+			memberService.insertMember(memberDto);
+			result="success";
+		}
 		
-		
-		return memberEmailq;
+		JSONArray jsonarr = new JSONArray();
+		jsonarr.add(0,memberMemo);
+		jsonarr.add(1,memberEmailq);
+		jsonarr.add(2,result);
+		return jsonarr;
 	}
+	
+	/**
+	 * 이메일 인증
+	 * @throws Exception 
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/emailVaildAjax")
+	public String emailVaildAjax(HttpServletRequest request,HttpServletRequest response, Model model) throws Exception {
+		
+		
+			MemberDto memberDto = new MemberDto();
+			memberDto.setUSER_ID(request.getParameter("USER_ID"));
+			memberDto.setEMAIL_CODE(request.getParameter("EMAIL_CODE"));
+			memberService.emailVaild(memberDto);
+			response.setCharacterEncoding("UTF-8");
+			String result = "<script>alert('이메일 인증이 완료되었습니다.'); location.href='/googleotp/login'; </script>";
+
+
+
+		
+		
+		return result;
+	}
+	
 	/** 32글자의 랜덤한 문자열(숫자포함) 생성 */
     public static String getRandomString() {
  
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
+    
+    public static String nvl(String str, String defaultStr) {
+        return str == null ? defaultStr : str ;
+	}
+    
 	/**
 	 * 회원가입 창
 	 * @throws ServletRequestBindingException 
