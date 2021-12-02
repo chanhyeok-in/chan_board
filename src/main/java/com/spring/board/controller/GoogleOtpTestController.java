@@ -71,7 +71,7 @@ public class GoogleOtpTestController {
 	 * @throws Exception 
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/newMemberAjax")
+	@RequestMapping(value = "/newMemberAjax" ,produces="application/json;charset=UTF-8")
 	public JSONArray newMemberAjax(HttpServletRequest request, Model model) throws Exception {
 		
 		String memberEmailq=getRandomString();
@@ -112,7 +112,7 @@ public class GoogleOtpTestController {
 	 * @throws Exception 
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/emailVaildAjax")
+	@RequestMapping(value = "/emailVaildAjax" ,produces="application/json;charset=UTF-8")
 	public String emailVaildAjax(HttpServletRequest request,HttpServletRequest response, Model model) throws Exception {
 		
 		
@@ -121,7 +121,7 @@ public class GoogleOtpTestController {
 			memberDto.setEMAIL_CODE(request.getParameter("EMAIL_CODE"));
 			memberService.emailVaild(memberDto);
 			response.setCharacterEncoding("UTF-8");
-			String result = "<script>alert('이메일 인증이 완료되었습니다.'); location.href='/googleotp/login'; </script>";
+			String result = "<script>alert('이메일 인증이 완료되었습니다.'); location.href='/otp/login'; </script>";
 
 
 
