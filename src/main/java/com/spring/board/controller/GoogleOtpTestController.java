@@ -41,7 +41,7 @@ public class GoogleOtpTestController {
     private MemberService memberService;
 	
 	/**
-	 * 로그인 입력창
+	 * 濡쒓렇�씤 �엯�젰李�
 	 * @throws ServletRequestBindingException 
 	 */
 	@RequestMapping(value = "/login")
@@ -54,7 +54,7 @@ public class GoogleOtpTestController {
 	}
 	
 	/**
-	 * 회원가입 창
+	 * �쉶�썝媛��엯 李�
 	 * @throws ServletRequestBindingException 
 	 */
 	@RequestMapping(value = "/newMember")
@@ -67,7 +67,20 @@ public class GoogleOtpTestController {
 	}
 	
 	/**
-	 * 회원가입 창
+	 * �쉶�썝媛��엯 李�
+	 * @throws ServletRequestBindingException 
+	 */
+	@RequestMapping(value = "/proton")
+	public String proton(HttpServletRequest request, Model model) throws ServletRequestBindingException {
+		
+		String result = ServletRequestUtils.getStringParameter(request, "result","");
+		model.addAttribute("result", result );
+		
+		return "googleotp/protonTransfer";
+	}
+	
+	/**
+	 * �쉶�썝媛��엯 李�
 	 * @throws Exception 
 	 */
 	@ResponseBody
@@ -83,16 +96,16 @@ public class GoogleOtpTestController {
 		int aaa = memberService.checkMember(memberDto);
 		checkMem=memberDto.getCOUNT();
 		if(aaa!=0){
-			memberMemo="이미 가입된 이메일입니다.";
+			memberMemo="�씠誘� 媛��엯�맂 �씠硫붿씪�엯�땲�떎.";
 			result="fail";
 		}else{
-			memberMemo="활성화 메일이 발송되었습니다. 이메일에서 확인 링크를 클릭시 계정이 활성화 됩니다. 메일이 오지 않는다면, 스팸메일함을 확인해 주시기 바랍니다.";
+			memberMemo="�솢�꽦�솕 硫붿씪�씠 諛쒖넚�릺�뿀�뒿�땲�떎. �씠硫붿씪�뿉�꽌 �솗�씤 留곹겕瑜� �겢由��떆 怨꾩젙�씠 �솢�꽦�솕 �맗�땲�떎. 硫붿씪�씠 �삤吏� �븡�뒗�떎硫�, �뒪�뙵硫붿씪�븿�쓣 �솗�씤�빐 二쇱떆湲� 諛붾엻�땲�떎.";
 			memberDto = new MemberDto();
 			memberDto.setUSER_ID(request.getParameter("USER_ID"));
 			Base32 codec = new Base32();
 			byte[] bEncodedKey = codec.encode(request.getParameter("USER_PW").getBytes());
 	         
-	        // 생성된 Key!
+	        // �깮�꽦�맂 Key!
 	        String encodedKey = new String(bEncodedKey);
 			memberDto.setUSER_PW(encodedKey);
 			memberDto.setEMAIL_CODE(memberEmailq);
@@ -108,7 +121,7 @@ public class GoogleOtpTestController {
 	}
 	
 	/**
-	 * 이메일 인증
+	 * �씠硫붿씪 �씤利�
 	 * @throws Exception 
 	 */
 	@ResponseBody
@@ -121,7 +134,7 @@ public class GoogleOtpTestController {
 			memberDto.setEMAIL_CODE(request.getParameter("EMAIL_CODE"));
 			memberService.emailVaild(memberDto);
 			response.setCharacterEncoding("UTF-8");
-			String result = "<script>alert('이메일 인증이 완료되었습니다.'); location.href='/otp/login'; </script>";
+			String result = "<script>alert('�씠硫붿씪 �씤利앹씠 �셿猷뚮릺�뿀�뒿�땲�떎.'); location.href='/otp/login'; </script>";
 
 
 
@@ -130,7 +143,7 @@ public class GoogleOtpTestController {
 		return result;
 	}
 	
-	/** 32글자의 랜덤한 문자열(숫자포함) 생성 */
+	/** 32湲��옄�쓽 �옖�뜡�븳 臾몄옄�뿴(�닽�옄�룷�븿) �깮�꽦 */
     public static String getRandomString() {
  
         return UUID.randomUUID().toString().replaceAll("-", "");
@@ -141,7 +154,7 @@ public class GoogleOtpTestController {
 	}
     
 	/**
-	 * 회원가입 창
+	 * �쉶�썝媛��엯 李�
 	 * @throws ServletRequestBindingException 
 	 */
 	@RequestMapping(value = "/checkEmail")
@@ -157,7 +170,7 @@ public class GoogleOtpTestController {
 	final String test_pw = "1111";
 	
 	/**
-	 * id/pw 비교 및 성공인 경우 google otp 생성 후 입력창 리턴
+	 * id/pw 鍮꾧탳 諛� �꽦怨듭씤 寃쎌슦 google otp �깮�꽦 �썑 �엯�젰李� 由ы꽩
 	 * @param request
 	 * @param locale
 	 * @param model
@@ -172,14 +185,14 @@ public class GoogleOtpTestController {
 		
 		if(id.equals(test_id) && pw.equals(test_pw))
 		{
-			String secretKeyStr = "GXRZIYSI";//generateSecretKey();// 매번 생성하지 않고 한번 생성된 키를 사용.
-			String url = getQRBarcodeURL(id, "ChanBoardLogin", secretKeyStr); // 생성된 바코드 주소!
-	        // userName과 hostName은 변수로 받아서 넣어야 하지만, 여기선 테스트를 위해 하드코딩 해줬다.
+			String secretKeyStr = "GXRZIYSI";//generateSecretKey();// 留ㅻ쾲 �깮�꽦�븯吏� �븡怨� �븳踰� �깮�꽦�맂 �궎瑜� �궗�슜.
+			String url = getQRBarcodeURL(id, "ChanBoardLogin", secretKeyStr); // �깮�꽦�맂 諛붿퐫�뱶 二쇱냼!
+	        // userName怨� hostName�� 蹂��닔濡� 諛쏆븘�꽌 �꽔�뼱�빞 �븯吏�留�, �뿬湲곗꽑 �뀒�뒪�듃瑜� �쐞�빐 �븯�뱶肄붾뵫 �빐以щ떎.
 	        System.out.println("URL : " + url);
 	        
 			model.addAttribute("secretKey", secretKeyStr);
 			model.addAttribute("url", url);
-			//otp 생성
+			//otp �깮�꽦
 			return "googleotp/second";
 		}
 		else
@@ -207,7 +220,7 @@ public class GoogleOtpTestController {
          
         boolean check_code = false;
         try {
-            // 키, 코드, 시간으로 일회용 비밀번호가 맞는지 일치 여부 확인.
+            // �궎, 肄붾뱶, �떆媛꾩쑝濡� �씪�쉶�슜 鍮꾨�踰덊샇媛� 留욌뒗吏� �씪移� �뿬遺� �솗�씤.
             check_code = check_code(encodedKey, user_code, ll);
         } catch (InvalidKeyException e) {
             e.printStackTrace();
@@ -241,7 +254,7 @@ public class GoogleOtpTestController {
         byte[] secretKey = Arrays.copyOf(buffer, 5);
         byte[] bEncodedKey = codec.encode(secretKey);
          
-        // 생성된 Key!
+        // �깮�꽦�맂 Key!
         String encodedKey = new String(bEncodedKey);
          
         System.out.println("encodedKey : " + encodedKey);
