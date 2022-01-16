@@ -292,7 +292,7 @@
              */
 
             // Token contract
-            account: $('#currency-contract').val,
+            account: $('#currency-contract').val(),
 
             // Action name
             name: "transfer",
