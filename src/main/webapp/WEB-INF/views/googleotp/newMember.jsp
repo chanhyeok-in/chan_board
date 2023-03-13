@@ -42,7 +42,7 @@
     	    				template_params: {
     	    				    'to_name': $('#email').val(),
     	    				    'from_name':"Chan's World",
-    	    				    'message': "<a href='http://3.34.42.145/otp/emailVaildAjax?USER_ID="+$('#email').val()+"&EMAIL_CODE="+res[1]+"'>http://3.34.42.145:8080/otp/emailVaildAjax?EMAIL_CODE="+res[1]+"</a>"
+    	    				    'message': "<a href='http://3.34.42.145/otp/emailVaildAjax?USER_ID="+$('#email').val()+"&EMAIL_CODE="+res[1]+"'>http://3.34.42.145/otp/emailVaildAjax?EMAIL_CODE="+res[1]+"</a>"
     	    				  	}
     	    			};
     	    					$.ajax({
