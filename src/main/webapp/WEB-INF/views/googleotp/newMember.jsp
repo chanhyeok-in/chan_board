@@ -42,7 +42,7 @@
     	    				template_params: {
     	    				    'to_name': $('#email').val(),
     	    				    'from_name':"Chan's World",
-    	    				    'message': "<a href='http://13.125.134.46/otp/emailVaildAjax?USER_ID="+$('#email').val()+"&EMAIL_CODE="+res[1]+"'>http://13.125.134.46:8080/otp/emailVaildAjax?EMAIL_CODE="+res[1]+"</a>"
+    	    				    'message': "<a href='http://3.34.42.145/otp/emailVaildAjax?USER_ID="+$('#email').val()+"&EMAIL_CODE="+res[1]+"'>http://3.34.42.145:8080/otp/emailVaildAjax?EMAIL_CODE="+res[1]+"</a>"
     	    				  	}
     	    			};
     	    					$.ajax({
@@ -52,7 +52,7 @@
     	    				contentType: 'application/json'
     	    			});         
     				alert(res[0]);
-    				location.href="http://13.125.134.46/otp/login";
+    				location.href="http://3.34.42.145/otp/login";
                     }
                 },
                 error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.

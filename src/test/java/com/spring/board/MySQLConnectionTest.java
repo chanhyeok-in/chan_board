@@ -15,7 +15,7 @@ public class MySQLConnectionTest {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
  
     static final String DRIVER = "com.mysql.jdbc.Driver";
-    static final String URL = "jdbc:mysql://13.125.134.46:3306/board?allowPublicKeyRetrieval=true&useSSL=false";
+    static final String URL = "jdbc:mysql://3.34.42.145:3306/board?allowPublicKeyRetrieval=true&useSSL=false";
     static final String USERNAME = "chan";
     static final String PASSWORD = "cksgur@@#";
  
